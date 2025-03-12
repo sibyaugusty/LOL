@@ -1,0 +1,904 @@
+/* styles.css - Complete styles for the champion portal */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #0A1428;
+    color: #C4B998;
+}
+
+.main-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Language Selector */
+.language-selector-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+#language-selector {
+    background-color: #1E2328;
+    color: #F0E6D2;
+    border: 1px solid #C8AA6E;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23C8AA6E" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    min-width: 150px;
+}
+
+#language-selector:hover {
+    border-color: #F0E6D2;
+}
+
+#language-selector option {
+    background-color: #1E2328;
+    color: #F0E6D2;
+}
+
+/* Top Container */
+.top-container {
+    min-height: 75vh;
+    height: auto;
+    background-color: #091428;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: visible;
+    transition: min-height 0.3s ease;
+}
+
+/* Champion Image (Left Side) */
+.champion-image-container {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-right: 20px;
+    padding-top: 10px;
+}
+
+.champion-image {
+    max-width: 100%;
+    max-height: 60%;
+    border-radius: 10px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.skins-preview {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.skin-thumbnail {
+    padding: 5px 10px;
+    background-color: #1E2328;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    font-size: 0.9rem;
+}
+
+.skin-thumbnail.active {
+    border-color: #C8AA6E;
+    color: #C8AA6E;
+}
+
+/* Champion Details (Right Side) */
+.champion-details {
+    width: 60%;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible;
+    padding-bottom: 10px;
+}
+
+.champion-name {
+    font-size: 2.5rem;
+    color: #F0E6D2;
+    margin-bottom: 10px;
+    padding-top: 10px;
+}
+
+.champion-title {
+    font-size: 1.2rem;
+    color: #C8AA6E;
+    margin-bottom: 15px;
+}
+
+.champion-meta {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.champion-roles,
+.champion-difficulty {
+    margin-right: 20px;
+    font-size: 1rem;
+}
+
+.champion-description {
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    max-height: none;
+    overflow-y: visible;
+}
+
+.abilities-section {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-bottom: 15px;
+}
+
+.abilities-section h2 {
+    color: #F0E6D2;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+/* Abilities Row */
+.abilities-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ability-icon-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 18%;
+    cursor: pointer;
+    min-width: 60px;
+    margin-right: 10px;
+}
+
+.ability-icon-wrapper.active .ability-icon {
+    border: 2px solid #C8AA6E;
+}
+
+.ability-icon-wrapper span {
+    margin-top: 8px;
+    color: #C8AA6E;
+    font-weight: bold;
+}
+
+.ability-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #1E2328;
+    border-radius: 10px;
+    background-size: cover;
+    border: 2px solid transparent;
+}
+
+/* Ability Description */
+.ability-description-container {
+    background-color: rgba(30, 35, 40, 0.5);
+    border-radius: 10px;
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible;
+    height: auto;
+    transition: all 0.3s ease;
+}
+
+.ability-description-container h3 {
+    color: #C8AA6E;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+.ability-description-container p {
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+/* Ability Video Section */
+.ability-video-section {
+    margin-top: 15px;
+    display: none;
+    border-top: 1px solid rgba(200, 170, 110, 0.3);
+    padding-top: 15px;
+    width: 100%;
+}
+
+.video-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.video-header h4 {
+    color: #5CDAFF;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.close-video-btn {
+    background: none;
+    border: none;
+    color: #C8AA6E;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close-video-btn:hover {
+    color: #F0E6D2;
+}
+
+.video-container {
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+#ability-video {
+    width: 100%;
+    display: block;
+    max-height: 300px;
+}
+
+.watch-video-btn {
+    background-color: #0A323C;
+    color: #5CDAFF;
+    border: 1px solid #3C8DA3;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 15px;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.watch-video-btn:hover {
+    background-color: #0E4056;
+    border-color: #5CDAFF;
+}
+
+.play-icon {
+    margin-right: 8px;
+    font-size: 0.8rem;
+}
+
+.video-error {
+    color: #e84057;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Search Container */
+.search-container {
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    color: #C8AA6E;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+#champion-search {
+    width: 100%;
+    background-color: #1E2328;
+    border: 1px solid #C8AA6E;
+    border-radius: 20px;
+    padding: 10px 40px 10px 35px;
+    color: #F0E6D2;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#champion-search:focus {
+    border-color: #F0E6D2;
+    box-shadow: 0 0 10px rgba(200, 170, 110, 0.3);
+}
+
+#champion-search::placeholder {
+    color: #A09B8C;
+}
+
+.clear-search {
+    position: absolute;
+    right: 12px;
+    color: #C8AA6E;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.clear-search.visible {
+    opacity: 1;
+}
+
+/* Bottom Container */
+.bottom-container {
+    height: auto;
+    min-height: 25vh;
+    max-height: 25vh;
+    background-color: #091428;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    margin-bottom: 20px;
+    /* Added to create a distinct scrolling context */
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+.champions-list {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100%;
+    white-space: nowrap;
+    padding-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    /* Ensure the list captures pointer events */
+    cursor: grab;
+}
+
+.champions-list:active {
+    cursor: grabbing;
+}
+
+/* Add this to your CSS file */
+.champions-list.active {
+    cursor: grabbing;
+}
+
+.champions-list.touch-device {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* Improve scrollbar visibility */
+.champions-list::-webkit-scrollbar {
+    height: 8px;
+    background: rgba(10, 20, 40, 0.3);
+}
+
+.champions-list::-webkit-scrollbar-thumb {
+    background: #C8AA6E;
+    border-radius: 4px;
+    border: 2px solid #091428;
+}
+
+.champions-list::-webkit-scrollbar {
+    height: 8px;
+}
+
+.champions-list::-webkit-scrollbar-track {
+    background: #0A1428;
+    border-radius: 4px;
+}
+
+.champions-list::-webkit-scrollbar-thumb {
+    background: #C8AA6E;
+    border-radius: 4px;
+}
+
+.champion-card {
+    min-width: 120px;
+    height: calc(100% - 10px);
+    margin-right: 15px;
+    background-color: #1E2328;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: rgba(200, 170, 110, 0.3);
+    /* Visual feedback on tap */
+}
+
+/* Touch-specific styling */
+@media (hover: none) and (pointer: coarse) {
+    .champions-list {
+        -webkit-overflow-scrolling: touch;
+        /* Smooth native scrolling */
+        scroll-behavior: smooth;
+    }
+
+    .champion-card:active {
+        opacity: 0.8;
+        /* Visual feedback for taps */
+    }
+}
+
+.champion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(200, 170, 110, 0.3);
+}
+
+.champion-card img {
+    width: 100%;
+    height: 75%;
+    object-fit: cover;
+}
+
+.champion-card span {
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25%;
+    font-size: 0.9rem;
+}
+
+/* Loading and Error States */
+.loading {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    color: #C8AA6E;
+    font-size: 1.2rem;
+}
+
+.no-results {
+    width: 100%;
+    text-align: center;
+    padding: 30px;
+    color: #C8AA6E;
+    font-size: 1.1rem;
+}
+
+/* Active champion card */
+.champion-card.active {
+    border: 2px solid #C8AA6E;
+    transform: translateY(-5px);
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablet Devices (768px - 1023px) */
+@media screen and (max-width: 1023px) {
+    .main-container {
+        padding: 15px;
+    }
+
+    .champion-name {
+        font-size: 2rem;
+    }
+
+    .champion-title {
+        font-size: 1rem;
+    }
+
+    .ability-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .champion-card {
+        min-width: 100px;
+    }
+
+    /* Adjust language selector */
+    .language-selector-container {
+        top: 15px;
+        right: 15px;
+    }
+
+    #language-selector {
+        min-width: 130px;
+        font-size: 0.8rem;
+    }
+
+    .watch-video-btn {
+        padding: 7px 12px;
+        font-size: 0.85rem;
+    }
+
+    #ability-video {
+        max-height: 250px;
+    }
+}
+
+/* Mobile Devices (up to 767px) */
+@media screen and (max-width: 767px) {
+    body {
+        overflow-y: auto;
+    }
+
+    .main-container {
+        padding: 15px;
+        min-height: 100vh;
+    }
+
+    /* Reposition language selector to avoid overlap */
+    .language-selector-container {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 100%;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #language-selector {
+        min-width: 150px;
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+
+    /* Update container heights for better proportions */
+    .top-container {
+        height: auto;
+        min-height: auto;
+        flex-direction: column;
+        padding: 15px;
+        margin-bottom: 15px;
+        overflow-y: visible;
+    }
+
+    .bottom-container {
+        height: auto;
+        min-height: 150px;
+        max-height: 25vh;
+        margin-bottom: 15px;
+    }
+
+    /* Make both sections full width */
+    .champion-image-container,
+    .champion-details {
+        width: 100%;
+        padding: 0;
+    }
+
+    .champion-image-container {
+        padding: 15px 0 20px 0;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(200, 170, 110, 0.3);
+    }
+
+    .champion-image {
+        max-height: 250px;
+        margin-bottom: 15px;
+    }
+
+    .skins-preview {
+        margin: 0;
+        justify-content: center;
+    }
+
+    .champion-details {
+        padding: 0 5px;
+    }
+
+    .champion-name {
+        font-size: 1.8rem;
+        padding-top: 5px;
+    }
+
+    .champion-title {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+
+    .champion-description {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        padding: 0 5px;
+    }
+
+    .champion-meta {
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    .champion-roles,
+    .champion-difficulty {
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .abilities-section {
+        margin-bottom: 20px;
+    }
+
+    .abilities-section h2 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+
+    /* Improve abilities row on mobile */
+    .abilities-row {
+        justify-content: flex-start;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .ability-icon-wrapper {
+        margin-right: 12px;
+        min-width: 55px;
+    }
+
+    .ability-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .ability-icon-wrapper span {
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+    .ability-description-container {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+
+    .ability-description-container h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .ability-description-container p {
+        font-size: 0.9rem;
+    }
+
+    /* Adjust search */
+    .search-container {
+        margin-bottom: 10px;
+    }
+
+    #champion-search {
+        padding: 8px 35px 8px 30px;
+        font-size: 0.85rem;
+    }
+
+    .search-icon {
+        left: 10px;
+        font-size: 14px;
+    }
+
+    .clear-search {
+        right: 10px;
+        font-size: 12px;
+    }
+
+    /* Adjust video section */
+    .watch-video-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        align-self: center;
+        width: 100%;
+        justify-content: center;
+    }
+
+    #ability-video {
+        max-height: 200px;
+    }
+
+    .video-header h4 {
+        font-size: 0.9rem;
+    }
+
+    /* Adjust champion grid cards */
+    .champions-list {
+        padding-bottom: 5px;
+    }
+
+    .champion-card {
+        min-width: 90px;
+        margin-right: 10px;
+    }
+
+    .champion-card span {
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+}
+
+/* Small Mobile Devices (up to 480px) */
+@media screen and (max-width: 480px) {
+    .main-container {
+        padding: 10px;
+    }
+
+    .top-container {
+        padding: 12px;
+    }
+
+    .champion-name {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+
+    .champion-title {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .champion-image-container {
+        padding: 10px 0 15px 0;
+    }
+
+    .champion-image {
+        max-height: 200px;
+        margin-bottom: 10px;
+    }
+
+    .skins-preview {
+        flex-wrap: wrap;
+    }
+
+    .skin-thumbnail {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+        margin: 3px;
+    }
+
+    .ability-icon {
+        width: 45px;
+        height: 45px;
+    }
+
+    .ability-icon-wrapper {
+        min-width: 45px;
+    }
+
+    .champion-card {
+        min-width: 80px;
+        margin-right: 8px;
+    }
+
+    /* Ensure text doesn't overflow */
+    .champion-card span {
+        font-size: 0.7rem;
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Make scrollbars less intrusive on small screens */
+    .champions-list::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    /* Search adjustments */
+    #champion-search {
+        padding: 6px 30px 6px 26px;
+        font-size: 0.8rem;
+        border-radius: 15px;
+    }
+
+    /* Video adjustments */
+    #ability-video {
+        max-height: 180px;
+    }
+}
+
+/* Very Small Mobile Devices */
+@media screen and (max-width: 375px) {
+    .main-container {
+        padding: 8px;
+    }
+
+    .top-container,
+    .bottom-container {
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .language-selector-container {
+        margin-bottom: 10px;
+    }
+
+    #language-selector {
+        min-width: 120px;
+        font-size: 0.75rem;
+    }
+
+    .champion-name {
+        font-size: 1.3rem;
+    }
+
+    .champion-title {
+        font-size: 0.85rem;
+    }
+
+    .champion-image {
+        max-height: 180px;
+    }
+
+    .skin-thumbnail {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+        margin: 2px;
+    }
+
+    .ability-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .ability-icon-wrapper {
+        min-width: 40px;
+    }
+
+    .champion-card {
+        min-width: 70px;
+    }
+
+    .ability-description-container {
+        padding: 8px;
+    }
+
+    .ability-description-container h3 {
+        font-size: 0.95rem;
+    }
+
+    .ability-description-container p {
+        font-size: 0.8rem;
+    }
+
+    .video-header h4 {
+        font-size: 0.85rem;
+    }
+}

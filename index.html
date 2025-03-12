@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League of Legends Champion Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="main-container">
+        <!-- Language Selector -->
+        <div class="language-selector-container">
+            <select id="language-selector" title="Select Language">
+                <option value="" disabled selected>Select Language</option>
+            </select>
+        </div>
+
+        <!-- Top Container -->
+        <div class="top-container">
+            <!-- Champion Image (Left side) -->
+            <div class="champion-image-container">
+                <img src="placeholder.jpg" alt="Champion Image" class="champion-image">
+                <div class="skins-preview">
+                    <div class="skin-thumbnail active" data-skin="default"></div>
+                    <div class="skin-thumbnail" data-skin="skin1"></div>
+                    <div class="skin-thumbnail" data-skin="skin2"></div>
+                </div>
+            </div>
+
+            <!-- Champion Details (Right side) -->
+            <div class="champion-details">
+                <h1 class="champion-name"></h1>
+                <div class="champion-title"></div>
+                <div class="champion-meta">
+                    <div class="champion-roles">Roles: <span>Fighter, Tank</span></div>
+                    <div class="champion-difficulty">Difficulty: <span>★★☆</span></div>
+                </div>
+
+                <div class="champion-description">
+                    A short description of the champion will go here. This provides a brief overview of the character's
+                    lore and playstyle.
+                </div>
+
+                <div class="abilities-section">
+                    <h2>Abilities</h2>
+                    <div class="abilities-row">
+                        <div class="ability-icon-wrapper active" data-ability="passive">
+                            <div class="ability-icon passive"></div>
+                            <span>Passive</span>
+                        </div>
+                        <div class="ability-icon-wrapper" data-ability="q">
+                            <div class="ability-icon q"></div>
+                            <span>Q</span>
+                        </div>
+                        <div class="ability-icon-wrapper" data-ability="w">
+                            <div class="ability-icon w"></div>
+                            <span>W</span>
+                        </div>
+                        <div class="ability-icon-wrapper" data-ability="e">
+                            <div class="ability-icon e"></div>
+                            <span>E</span>
+                        </div>
+                        <div class="ability-icon-wrapper" data-ability="r">
+                            <div class="ability-icon r"></div>
+                            <span>R</span>
+                        </div>
+                    </div>
+
+                    <div class="ability-description-container">
+                        <h3 id="ability-name">Passive: Ability Name</h3>
+                        <p id="ability-description">
+                            Detailed description of the passive ability will appear here. This will change when a
+                            different ability is selected above.
+                        </p>
+
+                        <!-- Video section -->
+                        <div class="ability-video-section" id="ability-video-section">
+                            <div class="video-header">
+                                <h4>Ability in Action</h4>
+                                <button class="close-video-btn" id="close-video-btn">✕</button>
+                            </div>
+                            <div class="video-container">
+                                <video id="ability-video" controls>
+                                    <source src="" type="video/webm">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+
+                        <!-- Watch Video button -->
+                        <button class="watch-video-btn" id="watch-video-btn">
+                            <span class="play-icon">▶</span> Watch Ability Video
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Container -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <i class="search-icon">🔍</i>
+                <input type="text" id="champion-search" placeholder="Search champions..." autocomplete="off">
+                <i class="clear-search" id="clear-search-btn">✕</i>
+            </div>
+        </div>
+
+        <!-- Bottom Container -->
+        <div class="bottom-container">
+            <div class="champions-list">
+                <div class="loading">Loading champions...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
