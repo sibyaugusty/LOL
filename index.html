@@ -11,12 +11,27 @@
 
 <body>
     <div class="main-container">
-        <!-- Language Selector -->
-        <div class="language-selector-container">
-            <select id="language-selector" title="Select Language">
-                <option value="" disabled selected>Select Language</option>
-            </select>
+        <div class="controls-container">
+            <!-- Theme toggle (left side) -->
+            <div class="theme-toggle-container">
+                <div class="theme-toggle" id="theme-toggle">
+                    <div class="toggle-icon day-icon">☀️</div>
+                    <div class="toggle-track">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                    <div class="toggle-icon night-icon">🌙</div>
+                </div>
+            </div>
+
+            <!-- Language selector (right side) -->
+            <div class="language-selector-container">
+                <select id="language-selector" title="Select Language">
+                    <option value="" disabled selected>Select Language</option>
+                    <!-- Languages will be loaded from API -->
+                </select>
+            </div>
         </div>
+
 
         <!-- Top Container -->
         <div class="top-container">

@@ -1,32 +1,226 @@
+// script.js - Complete functionality for the champion portal
 $(document).ready(function () {
+    // Store global variables
     let currentVersion = '';
-    let currentLanguage = 'en_US'; 
-    let championIdMap = {}; 
+    let currentLanguage = 'en_US'; // Default language
+    let championIdMap = {}; // For video mapping
 
-    // Initializing the application
+    // Initialize the application
     initializeApp();
 
-    // Initializing the application by fetching necessary data
+    // Initialize the application by fetching necessary data
     function initializeApp() {
         initializeSearch();
         initializeAbilityVideos();
         handleContainerExpansion();
         initializeHorizontalScroll();
+        initializeTheme(); // Initialize theme functionality
 
-        // fetching the latest game version
+        // First, fetch the latest game version
         fetchLatestVersion()
             .then(() => {
-                // Then fetching and loading languages
+                // Then fetch and load languages
                 return fetchLanguages();
             })
             .then(() => {
-                // Then loading champions with the current version and language
+                // Then load champions with the current version and language
                 return loadChampions();
             })
             .catch(error => {
                 console.error('Error initializing app:', error);
                 alert('There was an error loading data from Riot API. Please try again later.');
             });
+    }
+
+    // Theme Toggling Functionality
+    function initializeTheme() {
+        // Get saved theme from localStorage or default to dark
+        const savedTheme = localStorage.getItem('lolPortalTheme') || 'dark';
+
+        // Apply the saved theme
+        setTheme(savedTheme);
+
+        // Add event listener for theme toggle
+        $('#theme-toggle').on('click', function () {
+            // Get current theme
+            const currentTheme = $('html').attr('data-theme') || 'dark';
+
+            // Switch to opposite theme
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            // Apply the new theme
+            setTheme(newTheme);
+
+            // Save theme preference
+            localStorage.setItem('lolPortalTheme', newTheme);
+
+            // Log theme change
+            console.log(`Theme changed to ${newTheme} mode`);
+        });
+
+        // Log theme initialization
+        console.log(`Theme initialized to ${savedTheme} mode`);
+    }
+
+    // Function to apply a theme with animation
+    function setTheme(theme) {
+        // Apply theme attribute to html element
+        $('html').attr('data-theme', theme);
+
+        // Animate the theme change
+        animateThemeChange(theme);
+
+        // Update any dynamic elements that might need theme-specific adjustments
+        updateThemeSpecificElements(theme);
+    }
+
+    // Add a subtle animation when changing themes
+    function animateThemeChange(newTheme) {
+        // Create overlay element for transition effect
+        const overlay = $('<div class="theme-transition-overlay"></div>');
+        $('body').append(overlay);
+
+        // Set overlay initial state based on theme
+        if (newTheme === 'light') {
+            overlay.css({
+                'background-color': '#EFF2F7',
+                'opacity': 0
+            });
+        } else {
+            overlay.css({
+                'background-color': '#0A1428',
+                'opacity': 0
+            });
+        }
+
+        // Animate the overlay
+        overlay.animate({
+            'opacity': 0.3
+        }, 200, function () {
+            // After reaching peak opacity, fade out
+            overlay.animate({
+                'opacity': 0
+            }, 300, function () {
+                // Remove the overlay
+                overlay.remove();
+            });
+        });
+    }
+
+    // Update any elements that need special handling for themes
+    function updateThemeSpecificElements(theme) {
+        if (theme === 'light') {
+            // Update dropdown arrow to dark color for light theme
+            $('#language-selector').css('background-image', 'url(\'data:image/svg+xml;utf8,<svg fill="%232E3B52" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>\')');
+
+            // Update search icon for light theme
+            $('.search-icon').html('🔍');
+
+            // Update video container background
+            $('.video-container').css('background-color', '#F7F8FC');
+
+            // Add subtle animations for light theme
+            $('.champion-card').css('transition', 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)');
+            $('.ability-icon').css('transition', 'all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)');
+
+            // Add enhanced shadows for light theme
+            $('.top-container, .bottom-container').css('box-shadow', '0 8px 20px rgba(15, 41, 77, 0.08)');
+
+            // Fix for champion name in light mode
+            $('.champion-name').css({
+                'background': 'none',
+                'color': '#2E3B52'
+            });
+
+            // For browsers that support background-clip: text
+            if (CSS.supports('background-clip: text') || CSS.supports('-webkit-background-clip: text')) {
+                $('.champion-name').css({
+                    'background': 'linear-gradient(90deg, #C89B3C 0%, #F0E6D2 50%, #C89B3C 100%)',
+                    'background-size': '200% auto',
+                    'color': '#2E3B52',
+                    '-webkit-background-clip': 'text',
+                    'background-clip': 'text',
+                    'text-shadow': '0 1px 1px rgba(255, 255, 255, 0.5)',
+                    'animation': 'gradientText 6s ease infinite'
+                });
+            }
+
+            // Update scrollbar for light theme
+            $('body').append(`
+                <style>
+                    .champions-list::-webkit-scrollbar-thumb {
+                        background: #C89B3C;
+                        border: 2px solid #E4E9F2;
+                    }
+                </style>
+            `);
+        } else {
+            // Reset to default (dark theme)
+            $('#language-selector').css('background-image', 'url(\'data:image/svg+xml;utf8,<svg fill="%23C8AA6E" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>\')');
+
+            // Update search icon for dark theme
+            $('.search-icon').html('🔍');
+
+            // Update video container background
+            $('.video-container').css('background-color', '#000000');
+
+            // Reset transitions to default
+            $('.champion-card').css('transition', 'transform 0.3s ease');
+            $('.ability-icon').css('transition', 'all 0.3s ease');
+
+            // Reset shadows to default
+            $('.top-container, .bottom-container').css('box-shadow', '0 0 20px rgba(0, 0, 0, 0.5)');
+
+            // Dark theme resets for champion name
+            $('.champion-name').css({
+                'background': 'none',
+                'color': '#F0E6D2',
+                '-webkit-background-clip': 'initial',
+                'background-clip': 'initial',
+                'text-shadow': 'none',
+                'animation': 'none'
+            });
+
+            // Remove any ::after styling
+            $('style.champion-name-style').remove();
+            $('head').append('<style class="champion-name-style">.champion-name::after { display: none; }</style>');
+
+            // Update scrollbar for dark theme
+            $('body').append(`
+                <style>
+                    .champions-list::-webkit-scrollbar-thumb {
+                        background: #C8AA6E;
+                        border: 2px solid #091428;
+                    }
+                </style>
+            `);
+        }
+
+        // Check and update ability icons (sometimes they need refreshing after theme change)
+        refreshAbilityIcons();
+    }
+
+    // Helper function to refresh ability icons if needed
+    function refreshAbilityIcons() {
+        // Only refresh if we have champion data
+        if (window.currentChampionData) {
+            const champion = window.currentChampionData;
+
+            // Set passive ability
+            if (champion.passive) {
+                const passiveIconUrl = `https://ddragon.leagueoflegends.com/cdn/${currentVersion}/img/passive/${champion.passive.image.full}`;
+                $('.ability-icon.passive').css('background-image', `url(${passiveIconUrl})`);
+            }
+
+            // Set Q, W, E, R abilities
+            champion.spells.forEach((spell, index) => {
+                const abilityKeys = ['q', 'w', 'e', 'r'];
+                if (index < abilityKeys.length) {
+                    const spellIconUrl = `https://ddragon.leagueoflegends.com/cdn/${currentVersion}/img/spell/${spell.image.full}`;
+                    $(`.ability-icon.${abilityKeys[index]}`).css('background-image', `url(${spellIconUrl})`);
+                }
+            });
+        }
     }
 
     // Function to fetch the latest game version
@@ -38,7 +232,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (data) {
                     if (data && data.length > 0) {
-                        currentVersion = data[0];
+                        currentVersion = data[0]; // Get the first version (latest)
                         console.log(`Latest LoL version: ${currentVersion}`);
                         resolve();
                     } else {
@@ -83,8 +277,10 @@ $(document).ready(function () {
                 return;
             }
 
+            // Clear existing champion cards
             $('.champions-list').empty();
 
+            // Show loading indicator
             $('.champions-list').append('<div class="loading">Loading champions...</div>');
 
             $.ajax({
@@ -92,26 +288,27 @@ $(document).ready(function () {
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
+                    // Remove loading indicator
                     $('.loading').remove();
 
                     if (data && data.data) {
-                        // Creating champion ID map for videos
+                        // Create champion ID map for videos
                         Object.keys(data.data).forEach(champKey => {
                             const champion = data.data[champKey];
-                            championIdMap[champion.id] = champion.key;
+                            championIdMap[champion.id] = champion.key; // Store numeric ID keyed by champion ID
                         });
 
-                        // Populating champion grid
+                        // Populate champion grid
                         populateChampionGrid(data.data);
 
-                        // Loading the first champion by default
+                        // Load the first champion by default
                         const firstChampionId = Object.keys(data.data)[0];
 
-                        // Marking the first champion card as active
+                        // Make sure to mark the first champion card as active
                         $(`.champion-card[data-champion="${firstChampionId}"]`).addClass('active');
 
-                        // Loading champion details and storing champion data in a variable for ability clicks
-                        window.currentChampionData = null;
+                        // Load champion details and store champion data in a variable for ability clicks
+                        window.currentChampionData = null; // Initialize a global variable
                         loadChampionDetails(firstChampionId);
 
                         // Trigger event with champion data for video system
@@ -135,12 +332,12 @@ $(document).ready(function () {
     function populateChampionGrid(championsData) {
         const championsListElement = $('.champions-list');
 
-        // Sorting champions alphabetically by name
+        // Sort champions alphabetically by name
         const sortedChampions = Object.values(championsData).sort((a, b) =>
             a.name.localeCompare(b.name)
         );
 
-        // Adding each champion to the grid
+        // Add each champion to the grid
         sortedChampions.forEach(champion => {
             const championImageUrl = `https://ddragon.leagueoflegends.com/cdn/${currentVersion}/img/champion/${champion.image.full}`;
 
@@ -154,18 +351,18 @@ $(document).ready(function () {
             championsListElement.append(championCard);
         });
 
-        // Removing any existing click handlers first
+        // Remove any existing click handlers first
         $('.champions-list').off('click', '.champion-card');
 
-        // Using delegated event handling for champion cards
+        // Use delegated event handling for champion cards
         $('.champions-list').on('click', '.champion-card', function (e) {
             const championId = $(this).data('champion');
 
-            // Updating active state
+            // Update active state
             $('.champion-card').removeClass('active');
             $(this).addClass('active');
 
-            // Loading champion details
+            // Load champion details
             loadChampionDetails(championId);
         });
     }
@@ -178,17 +375,17 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 if (data && data.data && data.data[championId]) {
-                    // Storing the champion data globally for ability clicks
+                    // Store the champion data globally for ability clicks
                     window.currentChampionData = data.data[championId];
 
-                    // Displaying the champion details
+                    // Display the champion details
                     displayChampionDetails(data.data[championId]);
 
-                    //  first ability (passive) is marking as active
+                    // Make sure the first ability (passive) is marked as active
                     $('.ability-icon-wrapper').removeClass('active');
                     $('.ability-icon-wrapper[data-ability="passive"]').addClass('active');
 
-                    // Updating the ability description for the passive by default
+                    // Update the ability description for the passive by default
                     updateAbilityDescription('passive', data.data[championId]);
 
                     // Trigger ability selected event
@@ -203,11 +400,11 @@ $(document).ready(function () {
 
     // Function to display champion details
     function displayChampionDetails(champion) {
-        // Updating champion name and title
+        // Update champion name and title
         $('.champion-name').text(champion.name);
         $('.champion-title').text(champion.title);
 
-        // Updating roles and difficulty
+        // Update roles and difficulty
         $('.champion-roles span').text(champion.tags.join(', '));
 
         // Set difficulty stars (1-3 based on champion info)
@@ -215,21 +412,38 @@ $(document).ready(function () {
         const difficultyStars = '★'.repeat(difficultyLevel) + '☆'.repeat(3 - difficultyLevel);
         $('.champion-difficulty span').text(difficultyStars);
 
-        // Updating description
+        // Update description
         $('.champion-description').text(champion.blurb);
 
-        // Updating main champion image
+        // Update main champion image
         const splashImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_0.jpg`;
         $('.champion-image').attr('src', splashImageUrl);
 
-        // Updating abilities
+        // Update abilities
         updateAbilities(champion);
 
-        // Updating skins
+        // Update skins
         updateSkins(champion);
 
         // Adjust container height after content update
         setTimeout(adjustContainerHeight, 100);
+
+        // Refresh theme-specific styles for the champion name
+        const currentTheme = $('html').attr('data-theme') || 'dark';
+        if (currentTheme === 'light') {
+            // For browsers that support background-clip: text
+            if (CSS.supports('background-clip: text') || CSS.supports('-webkit-background-clip: text')) {
+                $('.champion-name').css({
+                    'background': 'linear-gradient(90deg, #C89B3C 0%, #F0E6D2 50%, #C89B3C 100%)',
+                    'background-size': '200% auto',
+                    'color': '#2E3B52',
+                    '-webkit-background-clip': 'text',
+                    'background-clip': 'text',
+                    'text-shadow': '0 1px 1px rgba(255, 255, 255, 0.5)',
+                    'animation': 'gradientText 6s ease infinite'
+                });
+            }
+        }
     }
 
     // Function to update abilities display
@@ -272,7 +486,7 @@ $(document).ready(function () {
             }
         }
 
-        // Updating the DOM elements
+        // Update the DOM elements
         $('#ability-name').html(abilityName);
         $('#ability-description').html(abilityDesc);
     }
@@ -302,11 +516,11 @@ $(document).ready(function () {
         $('.skin-thumbnail').click(function () {
             const skinId = $(this).data('skin');
 
-            // Updating active skin
+            // Update active skin
             $('.skin-thumbnail').removeClass('active');
             $(this).addClass('active');
 
-            // Updating champion image with selected skin
+            // Update champion image with selected skin
             const skinImageUrl = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${champion.id}_${skinId}.jpg`;
             $('.champion-image').attr('src', skinImageUrl);
         });
@@ -317,11 +531,11 @@ $(document).ready(function () {
         // Get ability type
         const abilityType = $(this).data('ability');
 
-        // Updating active state
+        // Update active state
         $('.ability-icon-wrapper').removeClass('active');
         $(this).addClass('active');
 
-        // Updating ability description using stored champion data
+        // Update ability description using stored champion data
         if (window.currentChampionData) {
             updateAbilityDescription(abilityType, window.currentChampionData);
 
@@ -460,7 +674,7 @@ $(document).ready(function () {
                 $('.champions-list').append('<div class="no-results">No champions found</div>');
             }
         } else {
-            // Removing no results message if it exists
+            // Remove no results message if it exists
             $('.no-results').remove();
         }
     }
@@ -484,7 +698,7 @@ $(document).ready(function () {
             const currentChampion = $('.champion-card.active').data('champion');
             const currentAbility = $('.ability-icon-wrapper.active').data('ability');
 
-            // Loading and play video
+            // Load and play video
             loadAbilityVideo(currentChampion, currentAbility);
 
             // Adjust container after video shows
